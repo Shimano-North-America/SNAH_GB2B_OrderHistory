@@ -81,6 +81,9 @@ module.exports = cds.service.impl(async function (srv) {
             //get the total results from the db based on query
             const result = await cds.run(query);
             const totalResults = result.length;
+            if (totalResults === 0) {
+                req.reject(403, "Data Not Found");
+            };
             debugger;
             // Calculating the total pages retrieved
             const totalPages = Math.ceil(totalResults / pageSize);
@@ -119,12 +122,7 @@ module.exports = cds.service.impl(async function (srv) {
         } catch (err) {
             console.error(err);
             //if catches any error returning that error
-            return {
-                error: {
-                    code: err.code || "ERROR_CODE",
-                    description: err.message || "An unexpected error occurred"
-                }
-            };
+            req.reject(err.code, err.message || "An unexpected error occurred");
         }
     });
     //Triggers when the GetOrderStatus post call happen to the endpoint
@@ -156,6 +154,10 @@ module.exports = cds.service.impl(async function (srv) {
             const Consignments_res = await cds.run(Consignments);
             const Invoice_res = await cds.run(Invoice);
             debugger;
+            // Check if all the arrays are empty
+            if (OrderHistory_res.length === 0 && Consignments_res.length === 0 && Invoice_res.length === 0) {
+                req.reject(403, "Data Not Found");
+            };
             const orderHistory = OrderHistory_res.map(order => ({
                 shipTo: order.shipTo,
                 soldTo: order.soldTo,
@@ -223,12 +225,7 @@ module.exports = cds.service.impl(async function (srv) {
             return data;
         } catch (err) {
             console.error(err);
-            return {
-                error: {
-                    code: err.code || "ERROR_CODE",
-                    description: err.message || "An unexpected error occurred"
-                }
-            };
+            req.reject(err.code, err.message || "An unexpected error occurred");
         }
     });
 });
