@@ -111,9 +111,9 @@ POST http://localhost:4004/odata/v4/erp-order-history/GetOrderStatus
 Content-Type:  application/json
 
 {
- "soldTo": "2745441",
- "erpOrderNumber": "11601034",
- "erpOrderType": "SR"
+ "soldTo": "2561927",
+ "erpOrderNumber": "12017402",
+ "erpOrderType": "SW"
 }
 
 # {

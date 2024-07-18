@@ -217,6 +217,10 @@ module.exports = cds.service.impl(async function (srv) {
                 cc: invoice.cc,
                 updateddat: invoice.updateddat
             }));
+            // Check if all the arrays are empty
+            if (orderHistory.length === 0 && consignments.length === 0 && invoice.length === 0) {
+                req.reject(403, "Data Not Found");
+            };
             let data = {
                 orderHistory: orderHistory,
                 consignments,
@@ -225,7 +229,12 @@ module.exports = cds.service.impl(async function (srv) {
             return data;
         } catch (err) {
             console.error(err);
-            req.reject(err.code, err.message || "An unexpected error occurred");
+            return {
+                error: {
+                    code: err.code || "ERROR_CODE",
+                    description: err.message || "An unexpected error occurred"
+                }
+            };
         }
     });
 });
