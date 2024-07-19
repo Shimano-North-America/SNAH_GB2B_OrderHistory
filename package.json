@@ -1,5 +1,5 @@
 {
-  "name": "SNAH_OrderHistory",
+  "name": "SNAH_B2B_OrderHistory",
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "repository": "<Add your repository here>",
@@ -8,9 +8,8 @@
   "dependencies": {
     "@sap/cds": "^7",
     "@sap/cds-hana": "^2",
-    "@sap/xsenv": "^5.1.0",
     "@sap/xssec": "^3",
-    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "express": "^4"
   },
   "devDependencies": {
@@ -24,7 +23,7 @@
   },
   "cds": {
     "requires": {
-      "auth": "dummy",
+      "auth": "xsuaa",
       "db": "hana"
     }
   }

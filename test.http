@@ -1,0 +1,123 @@
+###
+
+POST http://localhost:4004/odata/v4/erp-order-history/GetOrderHistory
+Content-Type: application/json
+
+{
+"soldTo": "3783115",
+"search": "",
+"searchBy": "",
+"fromDate": "",
+"toDate": "",
+"status": ["1","2"],
+"sort": "orderDate",
+"dir": "desc",
+"currentPage": 0,
+"pageSize": 12,
+"orderType": ["SO"]
+}
+
+# {
+# "soldTo": "3783115",
+# "search": "",
+# "searchBy": "",
+# "fromDate": "2023-01-07T00:00:00Z",
+# "toDate": "",
+# "status": ["1"],
+# "sort": "orderDate",
+# "dir": "desc",
+# "currentPage": 0,
+# "pageSize": 12,
+# "orderType": ["SW"]
+# }
+
+# {
+# "soldTo": "23423",
+# "search": "",
+# "searchBy": "",
+# "fromDate": "2023-01-07T00:00:00Z",
+# "toDate": "2023-01-13T00:00:00Z",
+# "status": ["1"],
+# "sort": "orderDate",
+# "dir": "desc",
+# "currentPage": "0",
+# "pageSize": "12",
+# "orderType": ["SO"]
+# }
+
+# {
+#  "soldTo" : "123123123",
+#  "search" : "",
+#  "searchBy" : "",
+#  "fromDate" : "",
+#  "toDate" : "",
+#  "status" : [ ],
+#  "sort" : "orderDate",
+#  "dir" : "desc",
+#  "currentPage" : 0,
+#  "pageSize" : 12,
+#  "orderType" : [ ]
+# }
+
+# {
+#  "soldTo" : "234234234234",
+#  "search" : "34567890",
+#  "searchBy" : "orderNumber",
+#  "fromDate" : "",
+#  "toDate" : "",
+#  "status" : [ ],
+#  "sort" : "orderDate",
+#  "dir" : "desc",
+#  "currentPage" : 0,
+#  "pageSize" : 12,
+#  "orderType" : [ ]
+# }
+
+
+###
+GET http://localhost:4004/odata/v4/erp-order-history/GETORDERHISTORY
+
+###
+GET http://localhost:4004/odata/v4/erp-order-history/POSTORDERHISTORY
+
+###
+DELETE http://localhost:4004/odata/v4/erp-order-history/POSTORDERHISTORY
+content-type: application/json
+
+{
+      "orders": [],
+      "soldTo": "203800",
+      "search": "",
+      "searchBy": "",
+      "fromDate": "2021-03-10T00:00:00.000Z",
+      "toDate": "2021-12-31T23:59:59.000Z",
+      "status": [
+        "1",
+        "2"
+      ],
+      "sort": "orderDate",
+      "dir": "desc",
+      "currentPage": "0",
+      "pageSize": "12",
+      "orderType": [
+        "PO",
+        "SO"
+      ]
+    }
+
+###
+
+POST http://localhost:4004/odata/v4/erp-order-history/GetOrderStatus
+Content-Type:  application/json
+
+{
+ "soldTo": "2745441",
+ "erpOrderNumber": "11601034",
+ "erpOrderType": "SR"
+}
+
+# {
+#  "soldTo": "3783115",
+#  "erpOrderNumber": "10094248",
+#  "erpOrderType": "SW"
+# }

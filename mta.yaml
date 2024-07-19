@@ -1,32 +1,32 @@
-_schema-version: '3.1'
-ID: SNAH_OrderHistory
+_schema-version: "3.1"
+ID: SNAH_B2B_OrderHistory
 description: A simple CAP project.
 version: 1.0.0
 modules:
-  - name: SNAH_OrderHistory-srv
+  - name: SNAH_B2B_OrderHistory-srv
     type: nodejs
     path: gen/srv
     requires:
-      - name: SNAH_COMMON_SERVICE
-      - name: SNAH_OrderHistory-db
+      - name: SNAH_B2B_OrderHistory-auth
+      - name: SNAH_B2B_OrderHistory-db
     provides:
       - name: srv-api
         properties:
-          srv-url: '${default-url}'
+          srv-url: ${default-url}
     parameters:
       buildpack: nodejs_buildpack
       readiness-health-check-http-endpoint: /health
       readiness-health-check-type: http
     build-parameters:
       builder: npm
-  - name: SNAH_OrderHistory-db-deployer
+  - name: SNAH_B2B_OrderHistory-db-deployer
     type: hdb
     path: gen/db
     requires:
-      - name: SNAH_OrderHistory-db
+      - name: SNAH_B2B_OrderHistory-db
     parameters:
       buildpack: nodejs_buildpack
-  - name: SNAH_OrderHistory
+  - name: SNAH_B2B_OrderHistory
     type: approuter.nodejs
     path: app/router
     requires:
@@ -35,28 +35,28 @@ modules:
         properties:
           forwardAuthToken: true
           name: srv-api
-          url: '~{srv-url}'
-      - name: SNAH_COMMON_SERVICE
+          url: ~{srv-url}
+      - name: SNAH_B2B_OrderHistory-auth
     parameters:
       disk-quota: 256M
       keep-existing-routes: true
       memory: 256M
 resources:
-  - name: SNAH_COMMON_SERVICE
+  - name: SNAH_B2B_OrderHistory-auth
     type: org.cloudfoundry.managed-service
     parameters:
       config:
         tenant-mode: dedicated
-        xsappname: snah_orderhistory
+        xsappname: snah_b2b_orderhistory
       path: ./xs-security.json
       service: xsuaa
       service-plan: application
-  - name: SNAH_OrderHistory-db
+  - name: SNAH_B2B_OrderHistory-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-  - name: SNAH_OrderHistory_html_repo_host
+  - name: SNAH_B2B_OrderHistory_html_repo_host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo

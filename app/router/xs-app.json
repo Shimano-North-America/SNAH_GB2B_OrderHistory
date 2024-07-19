@@ -4,7 +4,8 @@
     "logoutEndpoint": "/app-logout",
     "logoutPage": "/"
   },
-  "routes": [{
+  "routes": [
+    {
       "source": "^/app/(.*)$",
       "target": "$1",
       "localDir": ".",
