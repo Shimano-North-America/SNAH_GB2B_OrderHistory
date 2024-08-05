@@ -69,14 +69,22 @@ module.exports = cds.service.impl(async function (srv) {
             }
             // Adding the Search condition based on the SearchBy parameter
             if (search && searchBy) {
+                let searchColumn = searchBy;
+                if (searchBy === "orderNumber") {
+                    searchColumn = "ERPORDERNUMBER";
+                };
                 query.where({
-                    [searchBy]: {
+                    [searchColumn]: {
                         like: `%${search}%`
                     }
                 });
-            }
+            };
             // Adding the sort condition based on the direction
-            query.orderBy(`${sort} ${dir}`);
+            let sortColumn = sort;
+            if (sort === "orderNumber") {
+                sortColumn = "ERPORDERNUMBER";
+            };
+            query.orderBy(`${sortColumn} ${dir}`);
 
             //get the total results from the db based on query
             const result = await cds.run(query);

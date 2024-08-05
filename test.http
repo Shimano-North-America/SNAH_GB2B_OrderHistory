@@ -4,17 +4,17 @@ POST http://localhost:4004/odata/v4/erp-order-history/GetOrderHistory
 Content-Type: application/json
 
 {
-"soldTo": "3783115",
-"search": "",
-"searchBy": "",
+"soldTo": "03689676",
+"search": "11951994",
+"searchBy": "orderNumber",
 "fromDate": "",
 "toDate": "",
-"status": ["1","2"],
+"status": [],
 "sort": "orderDate",
 "dir": "desc",
 "currentPage": 0,
 "pageSize": 12,
-"orderType": ["SO"]
+"orderType": []
 }
 
 # {
@@ -111,8 +111,8 @@ POST http://localhost:4004/odata/v4/erp-order-history/GetOrderStatus
 Content-Type:  application/json
 
 {
- "soldTo": "2561927",
- "erpOrderNumber": "12017402",
+ "soldTo": "03689676",
+ "erpOrderNumber": "12002130",
  "erpOrderType": "SW"
 }
 
