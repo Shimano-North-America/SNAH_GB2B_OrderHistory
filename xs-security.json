@@ -1,6 +1,6 @@
 {
   "xsappname": "snah_b2b_orderhistory",
-  "tenant-mode": "dedicated",
+  "tenant-mode": "shared",
   "description": "Security profile of called application",
   "scopes": [
     {

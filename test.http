@@ -5,6 +5,7 @@ Content-Type: application/json
 
 {
 "soldTo": "03689676",
+"shipTo":["3689676"],
 "search": "11951994",
 "searchBy": "orderNumber",
 "fromDate": "",
@@ -14,7 +15,7 @@ Content-Type: application/json
 "dir": "desc",
 "currentPage": 0,
 "pageSize": 12,
-"orderType": []
+"orderType": ["SO"]
 }
 
 # {

@@ -32,6 +32,8 @@ service ERP_Order_History {
         };
         soldTo       : String(10)
             @Core.Description: 'Sold To';
+        shipTo       : array of String
+            @Core.Description: 'Ship To';
         search       : String
             @Core.Description: 'Search';
         searchBy     : String
@@ -56,6 +58,8 @@ service ERP_Order_History {
             @Core.Description: 'Total Pages';
         totalResults : String
             @Core.Description: 'Total Results';
+        message : String
+        @Core.Description : 'Message'
     }
 
     //Get Order Status Implementation

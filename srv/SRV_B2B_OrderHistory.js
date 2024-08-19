@@ -13,6 +13,7 @@ module.exports = cds.service.impl(async function (srv) {
         //initializing the req data into the respected fields to quering
         const {
             soldTo,
+            shipTo,
             search,
             searchBy,
             fromDate,
@@ -36,6 +37,14 @@ module.exports = cds.service.impl(async function (srv) {
                 .where({
                     soldTo: soldTo
                 });
+            //adding the shipTo condition
+            if (shipTo && shipTo.length > 0) {
+                query.where({
+                    shipTo: {
+                        in: shipTo
+                    }
+                })
+            }
             //adding the fromDate and toDate based on payload data sent
             if (fromDate && toDate) {
                 query.where({
@@ -90,7 +99,15 @@ module.exports = cds.service.impl(async function (srv) {
             const result = await cds.run(query);
             const totalResults = result.length;
             if (totalResults === 0) {
-                req.reject(403, "Data Not Found");
+                // req.reject(403, "Data Not Found");
+                return {
+                    message: "Data Not Found",
+                    orders: [],
+                    currentPage: Number(currentPage),
+                    pageSize: Number(pageSize),
+                    totalPages: 0,
+                    totalResults: 0
+                };
             };
             debugger;
             // Calculating the total pages retrieved
@@ -164,7 +181,7 @@ module.exports = cds.service.impl(async function (srv) {
             debugger;
             // Check if all the arrays are empty
             if (OrderHistory_res.length === 0 && Consignments_res.length === 0 && Invoice_res.length === 0) {
-                req.reject(403, "Data Not Found");
+                req.reject(404, "Data Not Found");
             };
             const orderHistory = OrderHistory_res.map(order => ({
                 shipTo: order.shipTo,
@@ -227,7 +244,7 @@ module.exports = cds.service.impl(async function (srv) {
             }));
             // Check if all the arrays are empty
             if (orderHistory.length === 0 && consignments.length === 0 && invoice.length === 0) {
-                req.reject(403, "Data Not Found");
+                req.reject(404, "Data Not Found");
             };
             let data = {
                 orderHistory: orderHistory,
