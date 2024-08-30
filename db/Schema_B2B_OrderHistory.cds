@@ -1,11 +1,11 @@
 namespace B2B_ORDERHISTORY;
 
 entity B2B_OrderHistory {
-    key shipTo            : String
+    key shipTo            : String(10)
         @Core.Description: 'Ship To';
-    key erpOrderNumber    : String
+    key erpOrderNumber    : String(10)
         @Core.Description: 'ERP Order Number';
-        hybrisOrderNumber : String
+        hybrisOrderNumber : String(10)
         @Core.Description: 'Hybris Order Number';
         soldTo            : String(10)
         @Core.Description: 'Sold To';
@@ -50,7 +50,7 @@ entity B2B_Consignments {
         @Core.Description: 'Carrier';
         BillTo          : String(10)
         @Core.Description: 'Bill To';
-        ShipTo          : String
+        ShipTo          : String(10)
         @Core.Description: 'Ship To';
     key OrderType       : String
         @Core.Description: 'Order Type';
