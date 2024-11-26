@@ -7,7 +7,7 @@ modules:
     type: nodejs
     path: gen/srv
     requires:
-      - name: SNAH_B2B_OrderHistory-auth
+      - name: SNAH_B2B_Common_oAuth
       - name: SNAH_B2B_OrderHistory-db
     provides:
       - name: srv-api
@@ -36,13 +36,13 @@ modules:
           forwardAuthToken: true
           name: srv-api
           url: ~{srv-url}
-      - name: SNAH_B2B_OrderHistory-auth
+      - name: SNAH_B2B_Common_oAuth
     parameters:
       disk-quota: 256M
       keep-existing-routes: true
       memory: 256M
 resources:
-  - name: SNAH_B2B_OrderHistory-auth
+  - name: SNAH_B2B_Common_oAuth
     type: org.cloudfoundry.managed-service
     parameters:
       config:

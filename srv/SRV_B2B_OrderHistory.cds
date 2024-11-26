@@ -29,6 +29,9 @@ service ERP_Order_History {
             @Core.Description: 'Order Date';
             totalPrice        : Decimal(10, 2)
             @Core.Description: 'Total Price';
+            holdCode          : String
+            @Core.Description: 'Hold Code';
+
         };
         soldTo       : String(10)
             @Core.Description: 'Sold To';
@@ -58,8 +61,8 @@ service ERP_Order_History {
             @Core.Description: 'Total Pages';
         totalResults : String
             @Core.Description: 'Total Results';
-        message : String
-        @Core.Description : 'Message'
+        message      : String
+            @Core.Description: 'Message'
     }
 
     //Get Order Status Implementation
@@ -114,6 +117,18 @@ service ERP_Order_History {
                 @Core.Description: 'Free Shipping';
             holdCode           : String
                 @Core.Description: 'Hold Code';
+            // New field
+            ccType             : String
+                @Core.Description: 'Credit Card Type';
+            // New field
+            ccLastFourDigits   : String(4)
+                @Core.Description: 'CC Last Four Digits';
+            // New field
+            ccHolderName       : String
+                @Core.Description: 'Credit Card Holder Name';
+            // New field
+            ccExpiration       : Date
+                @Core.Description: 'Credit Card Expiration Date';
         };
 
         consignments   : array of {
@@ -223,6 +238,10 @@ service ERP_Order_History {
                 @Core.Description: 'CC';
             updateddat         : Timestamp
                 @Core.Description: 'Updated Date';
+            tax                : Decimal(10, 2)
+                @Core.Description: 'Tax';
+            deliveryfee        : Decimal(10, 2)
+                @Core.Description: 'Delivery fee';
         };
     }
 }

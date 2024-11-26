@@ -21,7 +21,7 @@ entity B2B_OrderHistory {
         @Core.Description: 'Currency';
         totalPrice        : Decimal(10, 2)
         @Core.Description: 'Total Price';
-        erpOrderType      : String
+    key erpOrderType      : String
         @Core.Description: 'ERP Order Type';
         orderStatus       : String
         @Core.Description: 'Order Status';
@@ -29,12 +29,22 @@ entity B2B_OrderHistory {
         @Core.Description: 'Order Date';
         isSplitDelivery   : Boolean
         @Core.Description: 'Is Split Delivery';
-        subTotal          : Decimal(10, 2)
-        @Core.Description: 'Sub Total';
         freeShipping      : Boolean
         @Core.Description: 'Free Shipping';
         holdCode          : String
         @Core.Description: 'Hold Code';
+        // New field
+        ccType            : String
+        @Core.Description: 'Credit Card Type';
+        // New field
+        ccLastFourDigits  : String
+        @Core.Description: 'CC Last Four Digits';
+        // New field
+        ccHolderName      : String
+        @Core.Description: 'Credit Card Holder Name';
+        // New field
+        ccExpiration      : String(5)
+        @Core.Description: 'Credit Card Expiration Date';
 }
 
 entity B2B_Consignments {
@@ -42,7 +52,7 @@ entity B2B_Consignments {
         @Core.Description: 'Pick Number';
         invoicenum      : String
         @Core.Description: 'Invoice Number';
-        ContainerID     : String
+    key ContainerID     : String
         @Core.Description: 'Container ID';
         TrackingNumber  : String
         @Core.Description: 'Tracking Number';
@@ -81,34 +91,38 @@ entity B2B_Consignments {
 }
 
 entity B2B_Invoices {
-        billtonum  : String(10)
+        billtonum   : String(10)
         @Core.Description: 'Bill To Number';
-        shiptonum  : String
+        shiptonum   : String
         @Core.Description: 'Ship To Number';
-        invoiceco  : String
+        invoiceco   : String
         @Core.Description: 'Invoice CO';
-    key invoicenum : String
+    key invoicenum  : String
         @Core.Description: 'Invoice Number';
-    key invoicetyp : String
+    key invoicetyp  : String
         @Core.Description: 'Invoice Type';
-        reference  : String
+        reference   : String
         @Core.Description: 'Reference';
-        ordernum   : String
+        ordernum    : String
         @Core.Description: 'Order Number';
-        ordertyp   : String
+        ordertyp    : String
         @Core.Description: 'Order Type';
-        invdate    : Timestamp
+        invdate     : Timestamp
         @Core.Description: 'Invoice Date';
-        duedate    : Timestamp
+        duedate     : Timestamp
         @Core.Description: 'Due Date';
-        grossamt   : Decimal(15, 2)
+        grossamt    : Decimal(15, 2)
         @Core.Description: 'Gross Amount';
-        openamt    : Decimal(15, 2)
+        openamt     : Decimal(15, 2)
         @Core.Description: 'Open Amount';
-        indispute  : String
+        indispute   : String
         @Core.Description: 'Indispute';
-        cc         : String
+        cc          : String
         @Core.Description: 'CC';
-        updateddat : Timestamp
+        updateddat  : Timestamp
         @Core.Description: 'Updated Date';
+        tax         : Decimal(15, 2)
+        @Core.Description: 'Tax';
+        deliveryfee : Decimal(15, 2)
+        @Core.Description: 'Delivery fee';
 }

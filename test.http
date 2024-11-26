@@ -4,19 +4,36 @@ POST http://localhost:4004/odata/v4/erp-order-history/GetOrderHistory
 Content-Type: application/json
 
 {
-"soldTo": "03689676",
-"shipTo":["3689676"],
-"search": "11951994",
-"searchBy": "orderNumber",
-"fromDate": "",
-"toDate": "",
-"status": [],
-"sort": "orderDate",
-"dir": "desc",
-"currentPage": 0,
-"pageSize": 12,
-"orderType": ["SO"]
+  "soldTo" : "03184450",
+  "shipTo" : [ ],
+  "search" : "",
+  "searchBy" : "",
+  "fromDate" : "2024-10-01T00:00:00+08:00",
+  "toDate" : "2024-10-31T00:00:00+08:00",
+  "status" : [ ],
+  "sort" : "orderDate",
+  "dir" : "desc",
+  "currentPage" : 0,
+  "pageSize" : 12,
+  "orderType" : [ ]
 }
+
+# {
+#     "soldTo": "02620869",
+#     "shipTo": [
+#         "02620869"
+#     ],
+#     "search": "",
+#     "searchBy": "",
+#     "fromDate": "",
+#     "toDate": "",
+#     "status": [],
+#     "sort": "orderDate",
+#     "dir": "desc",
+#     "currentPage": 0,
+#     "pageSize": 12,
+#     "orderType": []
+# }
 
 # {
 # "soldTo": "3783115",
@@ -111,10 +128,10 @@ content-type: application/json
 POST http://localhost:4004/odata/v4/erp-order-history/GetOrderStatus
 Content-Type:  application/json
 
-{
- "soldTo": "03689676",
- "erpOrderNumber": "12002130",
- "erpOrderType": "SW"
+ {
+  "soldTo": "02074202",
+  "erpOrderNumber": "11960932",
+  "erpOrderType": "SW"
 }
 
 # {

@@ -45,21 +45,46 @@ module.exports = cds.service.impl(async function (srv) {
                     }
                 })
             }
-            //adding the fromDate and toDate based on payload data sent
+            // //adding the fromDate and toDate based on payload data sent
+            // if (fromDate && toDate) {
+            //     query.where({
+            //         orderDate: {
+            //             between: fromDate,
+            //             and: toDate
+            //         }
+            //     });
+            // } else if (fromDate && !toDate) {
+            //     query.where({
+            //         orderDate: {
+            //             '=': fromDate
+            //         }
+            //     });
+            // }
+
+            // fromDate & toDate conditions
+            const currentDate = new Date().toISOString();
             if (fromDate && toDate) {
                 query.where({
                     orderDate: {
-                        between: fromDate,
-                        and: toDate
+                        between: new Date(fromDate).toISOString(),
+                        and: new Date(toDate).toISOString()
                     }
                 });
             } else if (fromDate && !toDate) {
                 query.where({
                     orderDate: {
-                        '=': fromDate
+                        between: new Date(fromDate).toISOString(),
+                        and: currentDate
+                    }
+                });
+            } else if (!fromDate && toDate) {
+                query.where({
+                    orderDate: {
+                        '<=': new Date(toDate).toISOString()
                     }
                 });
             }
+
             // Adding the orderStatus to the query 
             if (status && status.length > 0) {
                 query.where({
@@ -132,7 +157,8 @@ module.exports = cds.service.impl(async function (srv) {
                 erpOrderType: order.erpOrderType,
                 orderStatus: order.orderStatus,
                 orderDate: order.orderDate,
-                totalPrice: order.totalPrice
+                totalPrice: order.totalPrice,
+                holdCode: order.holdCode
             }));
             //Building the return data 
             let data = {
@@ -199,7 +225,11 @@ module.exports = cds.service.impl(async function (srv) {
                 orderStatus: order.orderStatus,
                 orderDate: order.orderDate,
                 holdCode: order.holdCode,
-                freeShipping: order.freeShipping
+                freeShipping: order.freeShipping,
+                ccType: order.ccType,
+                ccLastFourDigits: order.ccLastFourDigits,
+                ccHolderName: order.ccHolderName,
+                ccExpiration: order.ccExpiration
             }));
             const consignments = Consignments_res.map(Consign => ({
                 PickNumber: Consign.PickNumber,
@@ -240,7 +270,9 @@ module.exports = cds.service.impl(async function (srv) {
                 openamt: invoice.openamt,
                 indispute: invoice.indispute,
                 cc: invoice.cc,
-                updateddat: invoice.updateddat
+                updateddat: invoice.updateddat,
+                tax: invoice.tax,
+                deliveryfee: invoice.deliveryfee
             }));
             // Check if all the arrays are empty
             if (orderHistory.length === 0 && consignments.length === 0 && invoice.length === 0) {
