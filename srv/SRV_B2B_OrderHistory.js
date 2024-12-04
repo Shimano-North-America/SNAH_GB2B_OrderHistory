@@ -102,17 +102,60 @@ module.exports = cds.service.impl(async function (srv) {
                 });
             }
             // Adding the Search condition based on the SearchBy parameter
+            // if (search && searchBy) {
+            //     let searchColumn = searchBy;
+            //     if (searchBy === "orderNumber") {
+            //         searchColumn = "ERPORDERNUMBER";
+            //     };
+            //     query.where({
+            //         [searchColumn]: {
+            //             like: `%${search}%`
+            //         }
+            //     });
+            // };
+
+
             if (search && searchBy) {
-                let searchColumn = searchBy;
                 if (searchBy === "orderNumber") {
-                    searchColumn = "ERPORDERNUMBER";
-                };
-                query.where({
-                    [searchColumn]: {
-                        like: `%${search}%`
-                    }
-                });
-            };
+                    query.where({
+                        erpOrderNumber: search
+                    }); // Exact match
+                } else if (searchBy === "invoiceNumber") {
+                    query = SELECT.distinct.from('B2B_ORDERHISTORY_B2B_ORDERHISTORY as OrderHistory')
+                        .join('B2B_ORDERHISTORY_B2B_Consignments as Consignments').on('OrderHistory.erpOrderNumber = Consignments.orderNumber')
+                        .columns(
+                            'OrderHistory.shipTo', 'OrderHistory.hybrisOrderNumber', 'OrderHistory.soldTo',
+                            'OrderHistory.erpOrderNumber', 'OrderHistory.poNumber', 'OrderHistory.paymentTerms',
+                            'OrderHistory.orderType', 'OrderHistory.orderPlacedBy', 'OrderHistory.currency',
+                            'OrderHistory.totalPrice', 'OrderHistory.erpOrderType', 'OrderHistory.orderStatus',
+                            'OrderHistory.orderDate', 'Consignments.invoiceNum'
+                        )
+                        .where({
+                            'Consignments.invoiceNum': search
+                        }); // Exact match for invoiceNumber
+                } else if (searchBy === "poNumber") {
+                    query.where({
+                        poNumber: {
+                            like: `%${search}%`
+                        }
+                    }); // Partial, case-insensitive match
+                    // } else if (searchBy === "itemNumber") {
+                    //     query = SELECT.from('B2B_ORDERHISTORY_B2B_ORDERHISTORY as OrderHistory')
+                    //         .join('B2B_ORDERHISTORY_B2B_Consignments as Consignments').on('OrderHistory.erpOrderNumber = Consignments.orderNumber')
+                    //         .columns(
+                    //             'OrderHistory.shipTo', 'OrderHistory.hybrisOrderNumber', 'OrderHistory.soldTo',
+                    //             'OrderHistory.erpOrderNumber', 'OrderHistory.poNumber', 'OrderHistory.paymentTerms',
+                    //             'OrderHistory.orderType', 'OrderHistory.orderPlacedBy', 'OrderHistory.currency',
+                    //             'OrderHistory.totalPrice', 'OrderHistory.erpOrderType', 'OrderHistory.orderStatus',
+                    //             'OrderHistory.orderDate', 'Consignments.itemNumber'
+                    //         )
+                    //         .where({ 'Consignments.itemNumber': { like: `%${search}%` } }); // Partial match for itemNumber
+                } else {
+                    throw new Error(`Invalid searchBy value: ${searchBy}`);
+                }
+            }
+
+
             // Adding the sort condition based on the direction
             let sortColumn = sort;
             if (sort === "orderNumber") {
@@ -122,7 +165,8 @@ module.exports = cds.service.impl(async function (srv) {
 
             //get the total results from the db based on query
             const result = await cds.run(query);
-            const totalResults = result.length;
+            const uniqueResults = [...new Map(result.map(item => [item.erpOrderNumber, item])).values()]; // Removing duplicates
+            const totalResults = uniqueResults.length;
             if (totalResults === 0) {
                 // req.reject(403, "Data Not Found");
                 return {
