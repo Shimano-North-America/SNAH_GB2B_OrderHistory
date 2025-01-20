@@ -32,7 +32,7 @@ module.exports = cds.service.impl(async function (srv) {
                 .columns(
                     'shipTo', 'hybrisOrderNumber', 'soldTo', 'erpOrderNumber',
                     'poNumber', 'paymentTerms', 'orderType', 'orderPlacedBy',
-                    'currency', 'totalPrice', 'erpOrderType', 'orderStatus', 'orderDate'
+                    'currency', 'totalPrice', 'erpOrderType', 'orderStatus', 'orderDate', 'holdCode'
                 )
                 .where({
                     soldTo: soldTo
@@ -140,7 +140,7 @@ module.exports = cds.service.impl(async function (srv) {
                         }
                     }); // Partial, case-insensitive match
                     // } else if (searchBy === "itemNumber") {
-                    //     query = SELECT.from('B2B_ORDERHISTORY_B2B_ORDERHISTORY as OrderHistory')
+                    //     query = SELECT.distinct.from('B2B_ORDERHISTORY_B2B_ORDERHISTORY as OrderHistory')
                     //         .join('B2B_ORDERHISTORY_B2B_Consignments as Consignments').on('OrderHistory.erpOrderNumber = Consignments.orderNumber')
                     //         .columns(
                     //             'OrderHistory.shipTo', 'OrderHistory.hybrisOrderNumber', 'OrderHistory.soldTo',
@@ -179,6 +179,31 @@ module.exports = cds.service.impl(async function (srv) {
                 };
             };
             debugger;
+            // Fetch delivery fee for each order from B2B_Invoices
+            const invoiceQuery = SELECT.from('B2B_ORDERHISTORY_B2B_INVOICES')
+                .columns('ordernum', 'deliveryfee', 'tax')
+                .where({
+                    ordernum: {
+                        in: result.map(r => r.erpOrderNumber)
+                    }
+                });
+
+            const invoices = await cds.run(invoiceQuery);
+            // Summing up deliveryFee and tax for each ordernum
+            const invoiceTotals = invoices.reduce((acc, inv) => {
+                const key = inv.ordernum;
+                if (!acc[key]) {
+                    acc[key] = {
+                        deliveryFee: 0,
+                        tax: 0
+                    };
+                }
+                acc[key].deliveryFee += parseFloat(inv.deliveryfee) || 0;
+                acc[key].tax += parseFloat(inv.tax) || 0;
+                return acc;
+            }, {});
+
+
             // Calculating the total pages retrieved
             const totalPages = Math.ceil(totalResults / pageSize);
 
@@ -188,22 +213,29 @@ module.exports = cds.service.impl(async function (srv) {
             // Slicing the results to get only the currentPage records for the response
             const paginatedResults = result.slice(startIndex, endIndex);
 
+
             // Mapping the results for the response
-            const orders = paginatedResults.map(order => ({
-                shipTo: order.shipTo,
-                hybrisOrderNumber: order.hybrisOrderNumber,
-                erpOrderNumber: order.erpOrderNumber,
-                poNumber: order.poNumber,
-                paymentTerms: order.paymentTerms,
-                orderType: order.orderType,
-                orderPlacedBy: order.orderPlacedBy,
-                currency: order.currency,
-                erpOrderType: order.erpOrderType,
-                orderStatus: order.orderStatus,
-                orderDate: order.orderDate,
-                totalPrice: order.totalPrice,
-                holdCode: order.holdCode
-            }));
+            const orders = paginatedResults.map(order => {
+                const {
+                    deliveryFee = 0, tax = 0
+                } = invoiceTotals[order.erpOrderNumber] || {};
+                const roundedTotalPrice = Number((Number(order.totalPrice || 0) + deliveryFee + tax).toFixed(2));
+                return {
+                    shipTo: order.shipTo,
+                    hybrisOrderNumber: order.hybrisOrderNumber,
+                    erpOrderNumber: order.erpOrderNumber,
+                    poNumber: order.poNumber,
+                    paymentTerms: order.paymentTerms,
+                    orderType: order.orderType,
+                    orderPlacedBy: order.orderPlacedBy,
+                    currency: order.currency,
+                    erpOrderType: order.erpOrderType,
+                    orderStatus: order.orderStatus,
+                    orderDate: order.orderDate,
+                    totalPrice: roundedTotalPrice,
+                    holdCode: order.holdCode
+                }
+            });
             //Building the return data 
             let data = {
                 orders,

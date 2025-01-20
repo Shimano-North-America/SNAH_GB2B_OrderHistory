@@ -4,19 +4,65 @@ POST http://localhost:4004/odata/v4/erp-order-history/GetOrderHistory
 Content-Type: application/json
 
 {
-  "soldTo" : "00240557",
-  "shipTo" : [],
-  "search" : "",
-  "searchBy" : "",
-  "fromDate" : "",
-  "toDate" : "",
-  "status" : [ ],
-  "sort" : "orderDate",
-  "dir" : "desc",
-  "currentPage" : 0,
-  "pageSize" : 12,
-  "orderType" : [ ]
+    "soldTo": "02159017",
+    "shipTo": [],
+    "search": "11897133",
+    "searchBy": "orderNumber",
+    "fromDate": "",
+    "toDate": "",
+    "status": [],
+    "sort": "orderDate",
+    "dir": "desc",
+    "currentPage": 0,
+    "pageSize": 12,
+    "orderType": []
 }
+
+
+# {
+#   "soldTo" : "01035564",
+#   "shipTo" : [],
+#   "search" : "11952101",
+#   "searchBy" : "orderNumber",
+#   "fromDate" : "",
+#   "toDate" : "",
+#   "status" : [ ],
+#   "sort" : "orderDate",
+#   "dir" : "desc",
+#   "currentPage" : 0,
+#   "pageSize" : 12,
+#   "orderType" : [ ]
+# }
+
+# {
+#   "soldTo" : "02725663",
+#   "shipTo" : [ ],
+#   "search" : "11887016",
+#   "searchBy" : "orderNumber",
+#   "fromDate" : "",
+#   "toDate" : "",
+#   "status" : [ ],
+#   "sort" : "orderDate",
+#   "dir" : "desc",
+#   "currentPage" : 0,
+#   "pageSize" : 12,
+#   "orderType" : [ ]
+# }
+
+# {
+#   "soldTo" : "00240557",
+#   "shipTo" : [],
+#   "search" : "MSTF18200",
+#   "searchBy" : "itemNumber",
+#   "fromDate" : "",
+#   "toDate" : "",
+#   "status" : [ ],
+#   "sort" : "orderDate",
+#   "dir" : "desc",
+#   "currentPage" : 0,
+#   "pageSize" : 12,
+#   "orderType" : [ ]
+# }
 
 # {
 #   "soldTo" : "03184450",
