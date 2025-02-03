@@ -8,8 +8,6 @@
 # This is a YAML-file. YAML is an indentation-sensitive file format. Please make sure to properly indent changes to it.
 ###
 
-
-
 ### General project setup
 general:
   inferBuildTool: true
@@ -24,7 +22,7 @@ steps:
 
 ### Stage-specific configuration
 stages:
-  'Confirm':
+  "Confirm":
     manualConfirmation: false
 
 #  Integration:
@@ -32,11 +30,11 @@ stages:
 #      - alias: 'mySystemAlias'
 #        credentialId: 'mySystemCredentialsId'
 
-#  Release:
-#    cfTargets:
-#      - org: 'myOrg'
-#        space: 'mySpace'
-#        apiEndpoint: 'https://'
-#        appName: 'myAppName'
-#        manifest: 'manifest.yml'
-#        credentialsId: 'myDeploymentCredentialsId'
+Release:
+  cfTargets:
+    - org: "sna-common-dev"
+      space: "IS-DEV"
+      apiEndpoint: "https://api.cf.us20.hana.ondemand.com"
+      appName: "SNAH_B2B_OrderHistory"
+      manifest: "manifest.yml"
+      credentialsId: "deploy-to-cf"
