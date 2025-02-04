@@ -11,30 +11,55 @@
 ### General project setup
 general:
   inferBuildTool: true
-
+  buildTool: "mta"
+service:
+  buildToolVersion: "MBTJ17N18"
+  stages:
+    Acceptance:
+      cfCredentialsId: "deploy-to-cf"
+    Release:
+      cfCredentialsId: "deploy-to-cf"
+stages:
+  Build:
+    mavenExecuteStaticCodeChecks: false
+    npmExecuteLint: true
+  Acceptance:
+    cfApiEndpoint: "https://api.cf.us20.hana.ondemand.com"
+    cfOrg: "sna-common-dev"
+    cfSpace: "IS-DEV"
+    deployType: "standard"
+    cloudFoundryDeploy: true
+    npmExecuteEndToEndTests: false
+  Malware Scan:
+    malwareExecuteScan: false
+  Release:
+    tmsExport: true
+    tmsUpload: false
+    cfApiEndpoint: "https://api.cf.us20.hana.ondemand.com"
+    cfOrg: "sna-common-dev"
+    cfSpace: "IS-DEV"
+    deployType: "standard"
+    cloudFoundryDeploy: true
+  Additional Unit Tests:
+    npmExecuteScripts: false
+  Compliance:
+    sonarExecuteScan: false
 ### Step-specific configuration
 steps:
-  mavenExecute:
-    dockerImage: devxci/mbtci:1.0.14
-
+  cloudFoundryDeploy:
+    mtaDeployParameters: "-f --version-rule ALL"
+  npmExecuteEndToEndTests:
+    runScripts:
+      - ci-e2e
+    scriptOptions:
+      - --verbose
+    virtualFrameBuffer: true
+  # mavenExecute:
+  #   dockerImage: devxci/mbtci:1.0.14
+  Build:
+    npmScripts: ["install", "run build"]
+  tmsExport:
+    nodeName: "DEV-COMMON-IS"
+    credentialsId: "tms-sk"
   artifactPrepareVersion:
     versioningType: cloud_noTag
-
-### Stage-specific configuration
-stages:
-  "Confirm":
-    manualConfirmation: false
-
-#  Integration:
-#    credentials:
-#      - alias: 'mySystemAlias'
-#        credentialId: 'mySystemCredentialsId'
-
-Release:
-  cfTargets:
-    - org: "sna-common-dev"
-      space: "IS-DEV"
-      apiEndpoint: "https://api.cf.us20.hana.ondemand.com"
-      appName: "SNAH_B2B_OrderHistory"
-      manifest: "manifest.yml"
-      credentialsId: "deploy-to-cf"
