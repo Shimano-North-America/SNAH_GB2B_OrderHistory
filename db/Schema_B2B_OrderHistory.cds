@@ -33,16 +33,13 @@ entity B2B_OrderHistory {
         @Core.Description: 'Free Shipping';
         holdCode          : String
         @Core.Description: 'Hold Code';
-        // New field
+        // New fields
         ccType            : String
         @Core.Description: 'Credit Card Type';
-        // New field
         ccLastFourDigits  : String
         @Core.Description: 'CC Last Four Digits';
-        // New field
         ccHolderName      : String
         @Core.Description: 'Credit Card Holder Name';
-        // New field
         ccExpiration      : String(5)
         @Core.Description: 'Credit Card Expiration Date';
 }
